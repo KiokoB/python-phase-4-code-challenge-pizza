@@ -7,6 +7,9 @@ with app.app_context():
 
     # This will delete any existing rows
     # so you can run the seed file multiple times without having duplicate entries in your database
+    db.drop_all()
+    db.create_all()
+    db.session.remove()
     print("Deleting data...")
     Pizza.query.delete()
     Restaurant.query.delete()
@@ -29,13 +32,15 @@ with app.app_context():
 
     print("Creating RestaurantPizza...")
 
-    pr1 = RestaurantPizza(restaurant=shack, pizza=cheese, price=1)
-    pr2 = RestaurantPizza(restaurant=bistro, pizza=pepperoni, price=4)
-    pr3 = RestaurantPizza(restaurant=palace, pizza=california, price=5)
+    pr1 = RestaurantPizza(price=1, pizza=cheese,restaurant=shack)
+    pr2 = RestaurantPizza(price=4, pizza=pepperoni,restaurant=bistro)
+    pr3 = RestaurantPizza(price=5, pizza=california,restaurant=palace)
     restaurantPizzas = [pr1, pr2, pr3]
+    # pr = RestaurantPizza(price = 5, pizza =cheese, restaurant = bistro)
     db.session.add_all(restaurants)
     db.session.add_all(pizzas)
     db.session.add_all(restaurantPizzas)
+    # db.session.add_all(pr)
     db.session.commit()
 
     print("Seeding done!")
